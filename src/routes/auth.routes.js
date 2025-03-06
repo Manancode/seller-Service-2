@@ -87,7 +87,7 @@ router.post("/signin", async (req, res) => {
 });
 
 // Update seller details route
-router.post("/:sellerId/details", authMiddleware, async (req, res) => {
+router.patch("/:sellerId/details", authMiddleware, async (req, res) => {
   try {
     const { sellerId } = req.params;
     const {
