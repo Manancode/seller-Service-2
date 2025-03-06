@@ -9,11 +9,11 @@ const prisma = new PrismaClient();
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const sellerId = req.sellerId;
-    const { name, description, price, stock, images, category } = req.body;
+    const { name, description, price, stock, images, category, subcategory, sizes } = req.body;
 
     // Validate required fields
-    if (!name || !price) {
-      return res.status(400).json({ message: "Name and price are required" });
+    if (!name || !price || !category || !subcategory) {
+      return res.status(400).json({ message: "Name, price, category, and subcategory are required" });
     }
 
     // Create the product
@@ -26,6 +26,8 @@ router.post("/", authMiddleware, async (req, res) => {
         images,
         category,
         sellerId,
+        subcategory,
+        sizes,
       },
     });
 
@@ -98,8 +100,7 @@ router.put("/:productId", authMiddleware, async (req, res) => {
   try {
     const { productId } = req.params;
     const sellerId = req.sellerId;
-    const { name, description, price, stock, images, category, isActive } =
-      req.body;
+    const { name, description, price, stock, images, category, isActive, subcategory, sizes } = req.body;
 
     // Check if product exists and belongs to the seller
     const existingProduct = await prisma.product.findUnique({
@@ -131,6 +132,8 @@ router.put("/:productId", authMiddleware, async (req, res) => {
         images,
         category,
         isActive,
+        subcategory,
+        sizes,
       },
     });
 
